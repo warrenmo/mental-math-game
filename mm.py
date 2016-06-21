@@ -49,7 +49,7 @@ class MMGame(object):
             else:
                 print('Sorry, I don\'t know what that means.')
 
-        print(tt)
+        print(self.time)
        
 def main():    
         
