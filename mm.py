@@ -31,7 +31,10 @@ class MMGame(object):
 
             start = timer()
 
-            ans = input( prompt )
+            ans   = input( prompt )
+
+            end   = timer()
+            self.time += end - start
 
             if ans.isdigit():
                 if int(ans) == (a * b):
@@ -49,10 +52,7 @@ class MMGame(object):
                         print('Cool! Moving on!')
                     else:
                         print('Sorry, I don\'t know what that means.')
-            
-            end = timer()
-            
-            self.time   += end - start
+
             self.qcount += 1
 
         print(self.time)
