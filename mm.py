@@ -11,16 +11,6 @@ from timeit import default_timer as timer
 from tabulate import tabulate
 
 class Summary(object):
-    def __init__(self):
-        self.array = []
-
-    def assign(self,x):
-        self.array = x
-
-    def output(self):
-        return self.array
-
-class Question(object):
     
     def __init__(self):
         self.number   = 0
@@ -58,7 +48,7 @@ class MMGame(object):
 
     def game(self):
         while True:
-            q   = Question()
+            s   = Summary()
 
             a   = random.randint(self.amin, self.amax)
             b   = random.randint(self.bmin, self.bmax)
@@ -78,11 +68,11 @@ class MMGame(object):
             if ans.isdigit():
                 if int(ans) == (a*b):
                     print('\nCorrect! :D')
-                    q.assign_result('correct')
+                    s.assign_result('correct')
                 else:
                     cor = str(a*b)
                     print('\nIncorrect :(\nThe correct answer is:', cor)
-                    q.assign_result('INCORRECT')
+                    s.assign_result('INCORRECT')
             else:
                 if ans == 'q':
                     wait = input( '\nWould you like to quit? (y or n): ' )
@@ -94,8 +84,8 @@ class MMGame(object):
                     else:
                         print('Sorry, I don\'t know what that means.')
 
-            q.assign(self.qcount, problem, int(ans), a*b, end-start)
-            out = q.output()
+            s.assign(self.qcount, problem, int(ans), a*b, end-start)
+            out = s.output()
             self.rlist.append(out)
 
             self.qcount += 1
@@ -107,11 +97,7 @@ def main():
     g = MMGame(10,99,10,99)
     g.game()
     
-    s = Summary()
-    s.assign(g.output())
-    
-    out = s.output()
-    table = tabulate(out, headers=['Question Number', 'Problem', 'Your Answer', 'Correct Answer', 'Result', 'Time Taken'])
+    table = tabulate(g.output(), headers=['Question Number', 'Problem', 'Your Answer', 'Correct Answer', 'Result', 'Time Taken'])
     print(table)
 
 if __name__ == "__main__":
