@@ -8,6 +8,28 @@
 import sys
 import random
 from timeit import default_timer as timer
+from tabulate import tabulate
+
+class Results(object):
+    def __init__(self):
+        self.array = []
+
+    def append(self,x):
+        self.array += x
+
+    def printR(self):
+        table = tabulate(self.array, headers=['Question Number', 'Prompt', 'Your Answer', 'Correct Answer', 'Time Taken'])
+        print(table)
+
+class Question(object):
+    
+    def __init__(self, number, prompt, correct, proposed, solution, time):
+        self.number   = number
+        self.prompt   = prompt
+        self.proposed = proposed
+        self.solution = solution
+        self.correct  = (self.proposed == self.solution)
+        self.time     = time
 
 class MMGame(object):
 
@@ -25,9 +47,9 @@ class MMGame(object):
             a   = random.randint(self.amin, self.amax)
             b   = random.randint(self.bmin, self.bmax)
 
-            qnum  = '\n(' + str(self.qcount) + ') '
-            ques  = str(a) + ' x ' + str(b) + '\nAnswer: '
-            prompt = qnum + ques
+            number   = '\n(' + str(self.qcount) + ') '
+            problem  = str(a) + ' x ' + str(b) + '\nAnswer: '
+            prompt   = number + problem
 
             start = timer()
 
@@ -55,12 +77,14 @@ class MMGame(object):
 
             self.qcount += 1
 
-        print(self.time)
+        print('Total time: ', self.time)
        
 def main():    
         
-    game = MMGame(10,99,10,99)
-    game.game()
+    #g = MMGame(10,99,10,99)
+    #g.game()
+    ex = Question(1, '30 x 15', True, 450, 450, 1.2)
+    ex.printQ()
 
 if __name__ == "__main__":
     main()
