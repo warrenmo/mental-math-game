@@ -6,14 +6,16 @@
 # Mental Math Games! (Based loosely on the types of problems posed in Secrets of Mental Math by Arthur Benjamin and Michael Shermer)
 
 import sys
-import random
+from random import randint
 from timeit import default_timer as timer
 from tabulate import tabulate
+import operator
+from abc import ABCMeta
 
 
 class MMGame(object):
 
-    def __init__(self,amin,amax,bmin,bmax):
+    def __init__(self, amin, amax, bmin, bmax):
         self.time = 0
         self.qcount = 1
 
@@ -28,8 +30,8 @@ class MMGame(object):
         while True:
             l = []
 
-            a = random.randint(self.amin, self.amax)
-            b = random.randint(self.bmin, self.bmax)
+            a = randint(self.amin, self.amax)
+            b = randint(self.bmin, self.bmax)
 
             number = '\n(' + str(self.qcount) + ') '
             problem = str(a) + ' x ' + str(b)
@@ -70,7 +72,40 @@ class MMGame(object):
         return self.rlist
 
 
-def main():    
+#class AddGame(MMGame):
+
+#    def __init__(self, 
+
+
+
+#class SubGame(MMGame):
+
+
+
+
+
+#class MulGame(MMGame):
+
+
+
+
+
+def ch_to_op(c, x, y):
+
+    if c == '+':
+        return operator.add(x, y)
+    elif c == '-':
+        return operator.sub(x, y)
+    elif c == 'x':
+        return operator.mul(x, y)
+#    elif c == '/':
+#        return operator.floordiv(x, y) + 'R' + str(x % y)
+        
+
+def main():
+
+    print(ch_to_op('/', 5, 2))
+    
     g = MMGame(10,99,10,99)
     g.game()
     
