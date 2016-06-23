@@ -10,10 +10,12 @@ from random import randint
 from timeit import default_timer as timer
 from tabulate import tabulate
 import operator
-from abc import ABCMeta
+from abc import ABCMeta, abstractmethod
 
 
-class MMGame(object):
+class MMGame(metaclass=ABCMeta):
+
+    opchar = ''
 
     def __init__(self, amin, amax, bmin, bmax):
         self.time = 0
@@ -34,7 +36,7 @@ class MMGame(object):
             b = randint(self.bmin, self.bmax)
 
             number = '\n(' + str(self.qcount) + ') '
-            problem = str(a) + ' x ' + str(b)
+            problem = str(a) + ' ' + self.opchar + ' ' + str(b)
             answer = '\nAnswer: '
             prompt = number + problem + answer
 
@@ -45,12 +47,13 @@ class MMGame(object):
             end = timer()
             self.time += end - start
 
+            cor = ch_to_op(self.opchar, a, b)
+
             if ans.isdigit():
-                if int(ans) == (a*b):
+                if int(ans) == cor:
                     print('\nCorrect! :D')
                     l.append('correct')
                 else:
-                    cor = str(a*b)
                     print('\nIncorrect :(\nThe correct answer is:', cor)
                     l.append('INCORRECT')
             else:
@@ -64,30 +67,40 @@ class MMGame(object):
                     else:
                         print('Sorry, I don\'t know what that means.')
 
-            l += [self.qcount, problem, int(ans), a*b, end-start]
-            self.rlist.append(l)
+            l += [self.qcount, problem, int(ans), cor, end-start]
+            self.summary.append(l)
             self.qcount += 1
 
     def output(self):
-        return self.rlist
+        return self.summary
+
+    @abstractmethod
+    def game_type():
+        pass
 
 
-#class AddGame(MMGame):
+class AddGame(MMGame):
 
-#    def __init__(self, 
+    opchar = '+'
 
-
-
-#class SubGame(MMGame):
-
+    def game_type(self):
+        return 'You\'ve chosen: Addtion!'
 
 
+class SubGame(MMGame):
+
+    opchar = '-'
+
+    def game_type(self):
+        return 'You\'ve chosen: Subtraction!'
 
 
-#class MulGame(MMGame):
+class MulGame(MMGame):
 
+    opchar = 'x'
 
-
+    def game_type():
+        return 'You\'ve chosen: Multiplication!'
 
 
 def ch_to_op(c, x, y):
@@ -98,15 +111,19 @@ def ch_to_op(c, x, y):
         return operator.sub(x, y)
     elif c == 'x':
         return operator.mul(x, y)
-#    elif c == '/':
-#        return operator.floordiv(x, y) + 'R' + str(x % y)
-        
+
+
+def menu(g):
+
+    print('\n Welcome to the mental math game!\nSelect a game mode:\n')
+
+    return g.game_type()
+    return g.game()
+
 
 def main():
-
-    print(ch_to_op('/', 5, 2))
     
-    g = MMGame(10,99,10,99)
+    g = MulGame(11,99,11,99)
     g.game()
     
     table = tabulate(g.output(), headers=['Result', 'Question Number', 'Problem', 'Your Answer', 'Correct Answer', 'Time Taken'])
