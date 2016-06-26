@@ -50,28 +50,25 @@ class MMGame(metaclass=ABCMeta):
             cor = ch_to_op(self.opchar, a, b)
 
             if ans.isdigit():
+
                 if int(ans) == cor:
                     print('\nCorrect! :D')
                     l.append('correct')
                 else:
                     print('\nIncorrect :(\nThe correct answer is:', cor)
                     l.append('INCORRECT')
+                l += [self.qcount, problem, int(ans), cor, end-start]
+
             else:
+
                 if ans == 'q':
-                    wait = input( '\nWould you like to quit? (y or n): ' )
-                    if wait == 'y':
-                        print('Goodbye!\n')
-                        break
-                    elif wait == 'n':
-                        print('Cool! Moving on!')
-                    else:
-                        print('Sorry, I don\'t know what that means.')
-                        continue
+                    print('Goodbye!\n')
+                    break
                 else:
                     print('Sorry, I don\'t know what that means.')
-                    continue
+                    l.append('BAD INPUT')
+                    l += [self.qcount, problem, -1, cor, end-start]
 
-            l += [self.qcount, problem, int(ans), cor, end-start]
             self.summary.append(l)
             self.qcount += 1
 
