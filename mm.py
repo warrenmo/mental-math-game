@@ -66,6 +66,10 @@ class MMGame(metaclass=ABCMeta):
                         print('Cool! Moving on!')
                     else:
                         print('Sorry, I don\'t know what that means.')
+                        continue
+                else:
+                    print('Sorry, I don\'t know what that means.')
+                    continue
 
             l += [self.qcount, problem, int(ans), cor, end-start]
             self.summary.append(l)
@@ -123,11 +127,26 @@ def menu(g):
 
 def main():
     
-    g = MulGame(11,99,11,99)
+    g = MulGame(2,9,11,99)
     g.game()
     
     table = tabulate(g.output(), headers=['Result', 'Question Number', 'Problem', 'Your Answer', 'Correct Answer', 'Time Taken'])
     print(table)
+
+    cornum = 0
+    incnum = 0
+    time   = 0
+    num    = 0
+    for i in g.output():
+        if i[0] == 'correct':
+            cornum += 1
+        else:
+            incnum += 1
+        time += i[5]
+        num  += 1
+    acc = cornum / (cornum + incnum) * 100
+    tim = time / num
+    print ('Accuracy: ', acc,'%\t','Avg. Time per Question: ', tim)     
 
 
 if __name__ == "__main__":
